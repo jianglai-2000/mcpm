@@ -91,11 +91,16 @@
                 </executions>
             </plugin>
 
-            <!-- Javadoc (for Maven Central) -->
+            <!-- Javadoc (for Maven Central, relaxed for now) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.11.2</version>
+                <configuration>
+                    <failOnError>true</failOnError>
+                    <failOnWarnings>false</failOnWarnings>
+                    <doclint>all,-missing</doclint>
+                </configuration>
                 <executions>
                     <execution>
                         <goals><goal>jar</goal></goals>

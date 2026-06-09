@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This is the source of truth for "what version is currently installed",
  * enabling the {@code update} command to detect and apply upgrades.
  *
- * <h3>State file structure</h3>
+ * <h2>State file structure</h2>
  * <pre>
  * {
  *   "version": 1,
