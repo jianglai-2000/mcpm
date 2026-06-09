@@ -57,8 +57,10 @@ public class ManifestValidator {
             warnings.add("authors is recommended");
         }
 
-        // type-specific checks
-        switch (m.type()) {
+        // type-specific checks (only if type is non-null and not empty)
+        String type = m.type();
+        if (!isBlank(type)) {
+            switch (type) {
             case "jar", "binary" -> {
                 if (m.handlerArgs().isEmpty()
                         || (!m.handlerArgs().containsKey("downloadUrl")
@@ -78,6 +80,7 @@ public class ManifestValidator {
                 }
             }
         }
+        }  // end if (!isBlank(type))
 
         // repository
         if (isBlank(m.repository()) && isBlank(m.homepage())) {
