@@ -1,5 +1,11 @@
 # mcpm — MCP Package Manager 🐱
 
+<div align="center">
+
+[English](README.md) | [中文](README-zh.md)
+
+</div>
+
 **Discover, install, and manage MCP servers from the command line.**
 
 ```bash
