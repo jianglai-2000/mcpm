@@ -14,6 +14,14 @@ import java.util.stream.Collectors;
  * Queries each registered provider in order and merges the results.
  * For conflicts (same package name from multiple providers), the first provider wins.
  */
+/**
+ * Aggregates results from all discovered {@link RegistryProvider} implementations.
+ * <p>
+ * Queries each registered provider in order and merges the results.
+ * For conflicts (same package name from multiple providers), the first provider wins.
+ * Provider failures are logged and silently skipped — one broken registry
+ * won't break the whole search.
+ */
 public class RegistryAggregator {
 
     private static final Logger log = LoggerFactory.getLogger(RegistryAggregator.class);

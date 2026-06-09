@@ -15,6 +15,21 @@ import java.util.*;
  * This class is the main entry point for {@code mcpm-core} — the CLI
  * delegates to it, and any other consumer (GUI, CI script, etc.) can too.
  */
+/**
+ * Central orchestrator for all install/uninstall operations.
+ * <p>
+ * Discovers {@link PackageHandler} and {@link LifecycleHook} implementations
+ * via {@link ServiceLoader} and coordinates the full lifecycle:
+ * <ol>
+ *   <li>Resolve version from package metadata</li>
+ *   <li>Merge default env with user overrides</li>
+ *   <li>Fire before-install hooks</li>
+ *   <li>Delegate to the correct {@link PackageHandler}</li>
+ *   <li>Fire after-install hooks</li>
+ * </ol>
+ * <p>
+ * This class is thread-safe for concurrent reads after construction.
+ */
 public class InstallOrchestrator {
 
     private static final Logger log = LoggerFactory.getLogger(InstallOrchestrator.class);

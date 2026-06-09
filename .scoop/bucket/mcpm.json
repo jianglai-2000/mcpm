@@ -1,0 +1,28 @@
+{
+    "version": "0.1.0",
+    "description": "MCP Package Manager — discover, install, and manage MCP servers",
+    "homepage": "https://github.com/mcpm/mcpm",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mcpm/mcpm/releases/latest/download/mcpm-cli-win-x64.jar",
+            "hash": ""
+        }
+    },
+    "bin": [
+        [
+            "java",
+            "mcpm",
+            "-jar",
+            "mcpm-cli-win-x64.jar"
+        ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mcpm/mcpm/releases/download/$version/mcpm-cli-win-x64.jar"
+            }
+        }
+    }
+}
