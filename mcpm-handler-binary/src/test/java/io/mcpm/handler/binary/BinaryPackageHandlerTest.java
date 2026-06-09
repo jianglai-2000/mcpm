@@ -45,7 +45,8 @@ class BinaryPackageHandlerTest {
 
     @Test
     void uninstallRemovesExistingBinary() throws Exception {
-        var binaryPath = tempDir.resolve("pkg-1.0.exe");
+        String ext = System.getProperty("os.name").toLowerCase().contains("win") ? ".exe" : "";
+        var binaryPath = tempDir.resolve("pkg-1.0" + ext);
         Files.writeString(binaryPath, "binary content");
 
         var handler = new BinaryPackageHandler(tempDir);
