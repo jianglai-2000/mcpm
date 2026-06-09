@@ -73,10 +73,15 @@ public class ServiceDiscovery {
         return List.copyOf(results);
     }
 
+    /** Return all cached discovered services. */
+    public List<DiscoveredService> all() {
+        return List.copyOf(discovered.values());
+    }
+
     /**
      * Scan running processes via {@link ProcessHandle}.
      */
-    List<DiscoveredService> scanProcesses() {
+    public List<DiscoveredService> scanProcesses() {
         List<DiscoveredService> results = new ArrayList<>();
         String now = LocalDateTime.now().format(TS);
 
@@ -102,10 +107,8 @@ public class ServiceDiscovery {
         return results;
     }
 
-    /**
-     * Scan localhost ports for MCP SSE endpoints.
-     */
-    List<DiscoveredService> scanPorts() {
+    /** Scan localhost ports for MCP SSE endpoints. */
+    public List<DiscoveredService> scanPorts() {
         List<DiscoveredService> results = new ArrayList<>();
         String now = LocalDateTime.now().format(TS);
 
@@ -125,10 +128,8 @@ public class ServiceDiscovery {
         return results;
     }
 
-    /**
-     * Read discovered services from mcp.json config.
-     */
-    List<DiscoveredService> scanConfig() {
+    /** Read discovered services from mcp.json config. */
+    public List<DiscoveredService> scanConfig() {
         List<DiscoveredService> results = new ArrayList<>();
         String now = LocalDateTime.now().format(TS);
 
