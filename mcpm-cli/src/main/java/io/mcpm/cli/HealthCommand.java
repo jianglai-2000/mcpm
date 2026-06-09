@@ -4,9 +4,13 @@ import io.mcpm.core.config.ConfigHelper;
 import io.mcpm.spi.McpConfig;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -16,11 +20,38 @@ import java.util.concurrent.Callable;
 )
 public class HealthCommand implements Callable<Integer> {
 
+    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     @CommandLine.Option(names = {"-c", "--config"}, description = "Path to mcp.json (auto-detected)")
     String configPath;
 
+    @CommandLine.Option(names = {"-w", "--watch"}, description = "Watch mode: keep checking at interval")
+    boolean watch;
+
+    @CommandLine.Option(names = {"-i", "--interval"}, description = "Watch interval in seconds (default: 5)")
+    int interval = 5;
+
     @Override
     public Integer call() throws Exception {
+        if (watch) {
+            return watchMode();
+        }
+        return singleCheck();
+    }
+
+    private int watchMode() throws Exception {
+        System.out.println("Watch mode — checking every " + interval + "s (Ctrl+C to stop)\n");
+        int exitCode = 0;
+        while (true) {
+            String ts = LocalTime.now().format(TIME_FMT);
+            System.out.print("[" + ts + "] ");
+            int result = singleCheck();
+            if (result != 0) exitCode = result;
+            Thread.sleep(interval * 1000L);
+        }
+    }
+
+    private int singleCheck() throws Exception {
         ConfigHelper configHelper = new ConfigHelper();
         Path configFile = configHelper.resolveConfigPath(configPath);
 
@@ -31,67 +62,67 @@ public class HealthCommand implements Callable<Integer> {
 
         McpConfig config = configHelper.readOrEmpty(configFile);
         if (config.size() == 0) {
-            System.out.println("No MCP servers configured in " + configFile);
+            System.out.println("No MCP servers configured.");
             return 0;
         }
 
         int passed = 0;
         int failed = 0;
-
-        System.out.println("Health check (" + configFile.getFileName() + "):\n");
+        boolean headerPrinted = false;
 
         for (var entry : config.servers().entrySet()) {
             String name = entry.getKey();
             McpConfig.ServerEntry server = entry.getValue();
-
-            System.out.print("  " + name + " → ");
+            String status;
 
             if (server.isStdio()) {
-                // Check if the command exists on PATH
                 String cmd = server.command();
                 if (cmd == null || cmd.isBlank()) {
-                    System.out.println("✘ no command specified");
+                    status = "✘ no command";
                     failed++;
                 } else if (cmd.contains("/") || cmd.contains("\\")) {
-                    // Full path — check file exists
-                    if (Files.exists(Path.of(cmd))) {
-                        System.out.println("✓ binary exists");
-                        passed++;
-                    } else {
-                        System.out.println("✘ binary not found: " + cmd);
-                        failed++;
-                    }
+                    status = Files.exists(Path.of(cmd)) ? "✓ OK" : "✘ missing";
+                    if (status.startsWith("✓")) passed++; else failed++;
                 } else {
-                    // Just check if it's a known runner
-                    System.out.println("? using " + cmd + " (assumed on PATH)");
+                    status = "? " + cmd;
                     passed++;
                 }
             } else {
-                // Remote transport — try TCP connection
                 String url = server.transportUrl();
                 if (url != null && url.startsWith("http")) {
                     try {
-                        String host = java.net.URI.create(url).getHost();
-                        int port = java.net.URI.create(url).getPort();
-                        if (port == -1) port = url.startsWith("https") ? 443 : 80;
-                        try (var s = new Socket(host, port)) {
-                            System.out.println("✓ " + host + ":" + port + " reachable");
+                        URI uri = URI.create(url);
+                        int port = uri.getPort() == -1 ? (url.startsWith("https") ? 443 : 80) : uri.getPort();
+                        try (Socket s = new Socket(uri.getHost(), port)) {
+                            status = "✓ " + uri.getHost() + ":" + port;
                             passed++;
                         }
                     } catch (Exception e) {
-                        System.out.println("✘ connection failed: " + e.getMessage());
+                        status = "✘ " + e.getMessage();
                         failed++;
                     }
                 } else {
-                    System.out.println("? no URL to check");
+                    status = "? no URL";
                     passed++;
                 }
             }
+
+            // Print in compact format
+            if (!headerPrinted && watch) {
+                System.out.println(configFile.getFileName() + " (" + config.size() + " servers)");
+                headerPrinted = true;
+            }
+            if (watch) {
+                System.out.println("  " + name + ": " + status);
+            } else {
+                System.out.println("  " + name + ": " + status);
+            }
         }
 
-        System.out.println();
-        System.out.println("Result: " + passed + " passed, " + failed + " failed"
-                + (failed == 0 ? " ✓" : ""));
+        if (!watch) {
+            System.out.println("\n" + passed + " passed, " + failed + " failed"
+                    + (failed == 0 ? " ✓" : ""));
+        }
         return failed > 0 ? 1 : 0;
     }
 }

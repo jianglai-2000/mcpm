@@ -74,6 +74,17 @@ public class ConfigHelper {
             return p.toAbsolutePath().normalize();
         }
 
+        // Check active environment
+        String env = currentEnv();
+        if (!"default".equals(env)) {
+            Path envConfig = Path.of("./mcp-" + env + ".json").toAbsolutePath().normalize();
+            if (Files.exists(envConfig)) {
+                log.info("Using env config: mcp-{}.json", env);
+                return envConfig;
+            }
+            return envConfig;
+        }
+
         // Scan well-known locations
         Path home = Path.of(System.getProperty("user.home"));
 
@@ -153,6 +164,16 @@ public class ConfigHelper {
     private void addIfExists(List<DiscoveredConfig> list, Path path, String label, String format) {
         if (Files.exists(path)) {
             list.add(new DiscoveredConfig(path.toAbsolutePath().normalize(), label, format));
+        }
+    }
+
+    /** Read current environment from settings, defaulting to 'default'. */
+    static String currentEnv() {
+        try {
+            var settings = new io.mcpm.core.settings.SettingsManager();
+            return settings.get("env", "default");
+        } catch (Exception e) {
+            return "default";
         }
     }
 
