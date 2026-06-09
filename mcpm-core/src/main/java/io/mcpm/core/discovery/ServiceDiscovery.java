@@ -107,21 +107,39 @@ public class ServiceDiscovery {
         return results;
     }
 
-    /** Scan localhost ports for MCP SSE endpoints. */
+    /** Scan localhost ports for MCP SSE endpoints, verifying via /health. */
     public List<DiscoveredService> scanPorts() {
         List<DiscoveredService> results = new ArrayList<>();
         String now = LocalDateTime.now().format(TS);
 
         for (int port : COMMON_PORTS) {
-            try (Socket s = new Socket("127.0.0.1", port)) {
-                // Port is open — it might be an MCP server
-                String name = "localhost:" + port;
-                results.add(new DiscoveredService(
-                        "port", name, "sse",
-                        "TCP " + port, "running",
-                        null, "http://localhost:" + port, now));
-            } catch (IOException ignored) {
-                // Port not reachable
+            // Check if it's an MCP server by hitting /health
+            String healthUrl = "http://127.0.0.1:" + port + "/health";
+            try {
+                var uri = URI.create(healthUrl);
+                var req = java.net.http.HttpRequest.newBuilder()
+                        .uri(uri)
+                        .GET()
+                        .timeout(java.time.Duration.ofSeconds(1))
+                        .build();
+                var client = java.net.http.HttpClient.newBuilder()
+                        .connectTimeout(java.time.Duration.ofSeconds(1))
+                        .build();
+                var resp = client.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (resp.statusCode() == 200) {
+                    String body = resp.body();
+                    // Verify it's an MCP server via health response
+                    if (body != null && (body.contains("mcp-java") || body.contains("\"status\":\"ok\""))) {
+                        String name = "localhost:" + port;
+                        results.add(new DiscoveredService(
+                                "port", name, "sse",
+                                "localhost:" + port, "running",
+                                null, "http://localhost:" + port, now));
+                    }
+                }
+            } catch (Exception ignored) {
+                // Not an MCP server or not reachable
             }
         }
 
