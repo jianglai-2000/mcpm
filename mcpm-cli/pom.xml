@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.mcpm</groupId>
+        <artifactId>mcpm-bom</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../mcpm-bom/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>mcpm-cli</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MCPM :: CLI</name>
+    <description>CLI entry point using Picocli. Thin layer — command logic delegates to mcpm-core and SPI implementations.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-npx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-jar</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-config-mcpjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-registry-static</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-pip</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-uvx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-binary</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-docker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Build fat JAR with picocli auto-complete generation and main class -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>io.mcpm.cli.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

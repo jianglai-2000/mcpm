@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.mcpm</groupId>
+    <artifactId>mcpm</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>MCPM</name>
+    <description>MCP Package Manager — CLI tool for discovering, installing, and managing MCP servers.</description>
+    <url>https://github.com/mcpm/mcpm</url>
+
+    <inceptionYear>2026</inceptionYear>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- dependency versions (single source of truth) -->
+        <picocli.version>4.7.6</picocli.version>
+        <jackson.version>2.18.2</jackson.version>
+        <junit.version>5.11.4</junit.version>
+        <assertj.version>3.27.3</assertj.version>
+        <mockito.version>5.15.2</mockito.version>
+        <slf4j.version>2.0.16</slf4j.version>
+        <logback.version>1.5.15</logback.version>
+    </properties>
+
+    <modules>
+        <module>mcpm-bom</module>
+        <module>mcpm-spi</module>
+        <module>mcpm-core</module>
+        <module>mcpm-cli</module>
+        <module>mcpm-config-mcpjson</module>
+        <module>mcpm-registry-static</module>
+        <module>mcpm-handler-npx</module>
+        <module>mcpm-handler-jar</module>
+        <module>mcpm-handler-pip</module>
+        <module>mcpm-handler-uvx</module>
+        <module>mcpm-handler-binary</module>
+        <module>mcpm-handler-docker</module>
+    </modules>
+
+</project>

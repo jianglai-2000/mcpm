@@ -1,0 +1,251 @@
+[
+  {
+    "name": "@anthropic/server-filesystem",
+    "description": "MCP server for filesystem access — read, write, edit files and directories.",
+    "type": "npx",
+    "latestVersion": "0.6.2",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.6.2": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "@anthropic/server-github",
+    "description": "MCP server for GitHub API — manage repositories, issues, pull requests, and more.",
+    "type": "npx",
+    "latestVersion": "0.6.2",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.6.2": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-postgres",
+    "description": "MCP server for PostgreSQL databases — query, inspect schema, and manage data.",
+    "type": "npx",
+    "latestVersion": "0.1.4",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.1.4": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-sqlite",
+    "description": "MCP server for SQLite databases — query and manage local databases.",
+    "type": "npx",
+    "latestVersion": "0.6.2",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.6.2": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "@anthropic/server-puppeteer",
+    "description": "MCP server for browser automation using Puppeteer — navigate, screenshot, and interact.",
+    "type": "npx",
+    "latestVersion": "0.6.2",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.6.2": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "firecrawl-mcp-server",
+    "description": "Web scraping and search MCP server. Extract content from any URL and search the web.",
+    "type": "npx",
+    "latestVersion": "1.3.0",
+    "authors": ["Firecrawl"],
+    "license": "MIT",
+    "homepage": "https://github.com/firecrawl/firecrawl-mcp-server",
+    "repository": "https://github.com/firecrawl/firecrawl-mcp-server",
+    "versions": {
+      "1.3.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "@anthropic/server-sequential-thinking",
+    "description": "MCP server that enables step-by-step reasoning and chain-of-thought analysis.",
+    "type": "npx",
+    "latestVersion": "0.1.0",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.1.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-memory",
+    "description": "MCP server for knowledge graph memory — store and retrieve structured information.",
+    "type": "npx",
+    "latestVersion": "0.6.2",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.6.2": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-prettier",
+    "description": "MCP server for code formatting using Prettier — format JavaScript, TypeScript, CSS, and more.",
+    "type": "npx",
+    "latestVersion": "0.1.0",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.1.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "@anthropic/server-sentry",
+    "description": "MCP server for Sentry integration — query issues, events, and performance data.",
+    "type": "npx",
+    "latestVersion": "0.1.0",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.1.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-slack",
+    "description": "MCP server for Slack — list channels, read messages, post messages, and search.",
+    "type": "npx",
+    "latestVersion": "0.1.0",
+    "authors": ["Anthropic"],
+    "license": "MIT",
+    "homepage": "https://github.com/modelcontextprotocol/servers",
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "versions": {
+      "0.1.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "java-mcp-server",
+    "description": "Java MCP server implementation — build MCP servers in Java with the Java-MCP framework.",
+    "type": "jar",
+    "latestVersion": "1.0.0",
+    "authors": ["VAR"],
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/varmcpm/java-mcp",
+    "repository": "https://github.com/varmcpm/java-mcp",
+    "versions": {
+      "1.0.0": {
+        "downloadUrl": "https://github.com/varmcpm/java-mcp/releases/download/v1.0.0/java-mcp-server-1.0.0.jar",
+        "handlerArgs": { "module": "io.mcpm.server" },
+        "defaultEnv": {
+          "JAVA_OPTS": "-Xmx512m"
+        }
+      }
+    }
+  },
+  {
+    "name": "mcp-server-ipinfo",
+    "description": "MCP server for IP geolocation — look up IP addresses via ipinfo.io API.",
+    "type": "pip",
+    "latestVersion": "0.1.2",
+    "authors": ["community"],
+    "license": "MIT",
+    "homepage": "https://github.com/mcp-server-ipinfo",
+    "repository": "https://github.com/mcp-server-ipinfo",
+    "versions": {
+      "0.1.2": {
+        "handlerArgs": { "module": "mcp_server_ipinfo" },
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-server-duckdb",
+    "description": "MCP server for DuckDB — run SQL queries on local and remote data sources.",
+    "type": "uvx",
+    "latestVersion": "0.3.0",
+    "authors": ["community"],
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/mcp-server-duckdb",
+    "repository": "https://github.com/mcp-server-duckdb",
+    "versions": {
+      "0.3.0": {
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-bin-pdftools",
+    "description": "Native binary MCP server for PDF manipulation — merge, split, extract text.",
+    "type": "binary",
+    "latestVersion": "1.2.0",
+    "authors": ["community"],
+    "license": "MIT",
+    "versions": {
+      "1.2.0": {
+        "downloadUrl": "https://github.com/org/releases/download/v1.2.0/pdftools-linux-amd64",
+        "defaultEnv": {}
+      }
+    }
+  },
+  {
+    "name": "mcp-docker-pg",
+    "description": "PostgreSQL MCP server via Docker — zero-install database access.",
+    "type": "docker",
+    "latestVersion": "1.0.0",
+    "authors": ["community"],
+    "license": "MIT",
+    "versions": {
+      "1.0.0": {
+        "handlerArgs": {
+          "image": "mcp/postgres:1.0.0",
+          "ports": ["5432:5432"],
+          "volumes": ["pgdata:/var/lib/postgresql/data"]
+        },
+        "defaultEnv": {
+          "POSTGRES_PASSWORD": "secret"
+        }
+      }
+    }
+  }
+]

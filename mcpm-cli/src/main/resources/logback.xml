@@ -1,0 +1,16 @@
+<configuration>
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Quiet by default; only show mcpm logs at WARN+ -->
+    <root level="WARN">
+        <appender-ref ref="STDERR"/>
+    </root>
+
+    <!-- Allow debug logging via system property: -Dmcpm.log.level=DEBUG -->
+    <logger name="io.mcpm" level="${mcpm.log.level:-WARN}"/>
+</configuration>
