@@ -14,7 +14,7 @@ jobs:
         java: [17, 21]
 
     runs-on: ${{ matrix.os }}
-    name: "Build & Test — ${{ matrix.os }} / Java ${{ matrix.java }}"
+    name: "${{ matrix.os }} / Java ${{ matrix.java }}"
 
     steps:
       - name: Checkout
@@ -28,16 +28,29 @@ jobs:
           cache: maven
 
       - name: Compile
-        run: mvn compile -q
+        run: ./mvnw compile -q --no-transfer-progress
+        shell: bash
 
       - name: Run tests
-        run: mvn test
+        run: ./mvnw test --no-transfer-progress
+        shell: bash
 
-      - name: Package
-        run: mvn package -DskipTests
+      - name: Package CLI
+        run: ./mvnw package -DskipTests -pl mcpm-cli -am --no-transfer-progress
+        shell: bash
 
-      - name: Verify fat JAR runs
+      - name: Package Registry Server
+        run: ./mvnw package -DskipTests -pl mcpm-registry-server -am --no-transfer-progress
+        shell: bash
+
+      - name: Verify CLI JAR
         run: java -jar mcpm-cli/target/mcpm-cli-0.1.0-SNAPSHOT.jar --version
+        shell: bash
 
-      - name: Smoke test — search
+      - name: Verify Server JAR
+        run: java -jar mcpm-registry-server/target/mcpm-registry-server-0.1.0-SNAPSHOT.jar --help
+        shell: bash
+
+      - name: Smoke test
         run: java -jar mcpm-cli/target/mcpm-cli-0.1.0-SNAPSHOT.jar search filesystem
+        shell: bash

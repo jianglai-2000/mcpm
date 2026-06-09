@@ -61,14 +61,43 @@ mcpm/
 └── .github/workflows/ci.yml   CI: 3 OS × 2 JDK
 ```
 
+## Running Your Own Registry
+
+```bash
+# Start a local registry server
+java -jar mcpm-registry-server/target/mcpm-registry-server-0.1.0-SNAPSHOT.jar \
+  --port 8080 --data ./registry.json
+
+# Publish your package to it
+mcpm publish --registry http://localhost:8080
+```
+
 ## Building
 
 ```bash
 git clone https://github.com/mcpm/mcpm.git
 cd mcpm
-mvn package -DskipTests
+
+# Using Maven wrapper (no pre-installed Maven needed)
+./mvnw package -DskipTests
+
+# Run the CLI
 java -jar mcpm-cli/target/mcpm-cli-0.1.0-SNAPSHOT.jar
+
+# Run your own registry server
+java -jar mcpm-registry-server/target/mcpm-registry-server-0.1.0-SNAPSHOT.jar
 ```
+
+## Project Stats
+
+| Metric | Value |
+|--------|-------|
+| Modules | 14 Maven modules |
+| CLI commands | 9 (search, info, install, uninstall, list, update, detect, init, publish) |
+| Package handlers | 6 (npx, pip, uvx, jar, binary, docker) |
+| Tests | 80+ unit tests |
+| CI | 3 OS × 2 JDK (17, 21) |
+| Dependencies | Runtime: Picocli, Jackson, SLF4J. SPI: zero. |
 
 ## License
 
