@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="DM_DEFAULT_ENCODING"/>
+        <Or>
+            <Class name="io.mcpm.cli.Main"/>
+        </Or>
+    </Match>
+    <!-- Exclude generated/3rd-party patterns -->
+    <Match>
+        <Bug code="EI,EI2"/> <!-- mutable objects exposed -->
+        <Priority value="2"/>
+    </Match>
+</FindBugsFilter>
