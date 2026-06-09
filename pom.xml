@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- dependency versions (single source of truth) -->
-        <picocli.version>4.7.6</picocli.version>
+        <picocli.version>4.7.7</picocli.version>
         <jackson.version>2.18.2</jackson.version>
         <junit.version>5.11.4</junit.version>
         <assertj.version>3.27.3</assertj.version>
