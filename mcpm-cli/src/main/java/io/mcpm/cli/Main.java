@@ -13,6 +13,7 @@ import picocli.CommandLine;
                 DetectCommand.class,
                 UpdateCommand.class,
                 InitCommand.class,
+                PublishCommand.class,
                 CommandLine.HelpCommand.class
         },
         description = "MCP Package Manager — discover, install, and manage MCP servers.",

@@ -46,6 +46,11 @@
             </dependency>
             <dependency>
                 <groupId>io.mcpm</groupId>
+                <artifactId>mcpm-registry-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mcpm</groupId>
                 <artifactId>mcpm-handler-npx</artifactId>
                 <version>${project.version}</version>
             </dependency>

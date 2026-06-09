@@ -36,6 +36,7 @@
         <module>mcpm-cli</module>
         <module>mcpm-config-mcpjson</module>
         <module>mcpm-registry-static</module>
+        <module>mcpm-registry-server</module>
         <module>mcpm-handler-npx</module>
         <module>mcpm-handler-jar</module>
         <module>mcpm-handler-pip</module>
