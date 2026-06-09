@@ -45,6 +45,10 @@
         <module>mcpm-handler-uvx</module>
         <module>mcpm-handler-binary</module>
         <module>mcpm-handler-docker</module>
+        <module>mcpm-handler-go</module>
+        <module>mcpm-handler-deno</module>
+        <module>mcpm-handler-bun</module>
+        <module>mcpm-handler-cargo</module>
     </modules>
 
     <build>

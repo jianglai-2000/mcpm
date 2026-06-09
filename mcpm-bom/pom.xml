@@ -79,6 +79,26 @@
                 <artifactId>mcpm-handler-docker</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.mcpm</groupId>
+                <artifactId>mcpm-handler-go</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mcpm</groupId>
+                <artifactId>mcpm-handler-deno</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mcpm</groupId>
+                <artifactId>mcpm-handler-bun</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mcpm</groupId>
+                <artifactId>mcpm-handler-cargo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- CLI -->
             <dependency>

@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+    name: "Release — ${{ matrix.os }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: maven
+
+      - name: Build CLI fat JAR
+        run: ./mvnw package -DskipTests -pl mcpm-cli -am --no-transfer-progress -q
+        shell: bash
+
+      - name: Build Server fat JAR
+        run: ./mvnw package -DskipTests -pl mcpm-registry-server -am --no-transfer-progress -q
+        shell: bash
+
+      - name: Run tests
+        run: ./mvnw test --no-transfer-progress -q
+        shell: bash
+
+      - name: Prepare release assets
+        shell: bash
+        run: |
+          mkdir -p release
+          cp mcpm-cli/target/mcpm-cli-*.jar release/
+          cp mcpm-registry-server/target/mcpm-registry-server-*.jar release/
+          # Remove the original non-shaded jars
+          rm -f release/original-*.jar
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true
+          body: |
+            ## mcpm ${{ github.ref_name }}
+
+            ### Assets
+            - `mcpm-cli-*.jar` — CLI tool (run with `java -jar`)
+            - `mcpm-registry-server-*.jar` — Registry server
+
+            ### Install
+            ```bash
+            # Download CLI
+            curl -sSfL https://github.com/mcpm/mcpm/releases/latest/download/mcpm-cli-*.jar -o mcpm.jar
+            alias mcpm='java -jar mcpm.jar'
+
+            # Or install via Homebrew (macOS/Linux)
+            brew install mcpm/tap/mcpm
+
+            # Or with Scoop (Windows)
+            scoop bucket add mcpm https://github.com/mcpm/scoop-mcpm
+            scoop install mcpm
+            ```

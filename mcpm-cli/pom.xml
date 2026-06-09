@@ -55,6 +55,22 @@
             <artifactId>mcpm-handler-docker</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-go</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-deno</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-bun</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mcpm</groupId>
+            <artifactId>mcpm-handler-cargo</artifactId>
+        </dependency>
+        <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>
