@@ -89,6 +89,12 @@ public class McpJsonConfigFormatProvider implements ConfigFormatProvider {
     @Override
     public void write(String configFilePath, McpConfig config) {
         try {
+            // Validate config before writing
+            String validationError = validateConfig(config);
+            if (validationError != null) {
+                log.warn("Config validation: {}", validationError);
+            }
+
             // Preserve existing fields (important for claude_desktop_config.json
             // which has globalShortcut, etc. alongside mcpServers)
             ObjectNode root;
@@ -177,5 +183,18 @@ public class McpJsonConfigFormatProvider implements ConfigFormatProvider {
         }
 
         return node;
+    }
+
+    /** Validate mcp.json entries for common mistakes. */
+    private String validateConfig(McpConfig config) {
+        for (var entry : config.servers().entrySet()) {
+            String name = entry.getKey();
+            if (name.startsWith("_")) continue;
+            McpConfig.ServerEntry server = entry.getValue();
+            if (server.isStdio() && (server.command() == null || server.command().isBlank())) {
+                return "Server '" + name + "' has no command";
+            }
+        }
+        return null;
     }
 }

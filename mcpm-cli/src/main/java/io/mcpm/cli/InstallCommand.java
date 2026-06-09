@@ -61,7 +61,15 @@ public class InstallCommand implements Callable<Integer> {
         }
         McpmPackage pkg = pkgOpt.get();
 
-        System.out.println("Package:  " + pkg.name() + " v" + (version != null ? version : pkg.latestVersion()));
+        // Resolve version range (^1.0, >=2.0, etc.)
+        String resolvedVersion = resolveVersion(pkg, version);
+        if (resolvedVersion == null) {
+            System.err.println("✘ No matching version for: " + (version != null ? version : "latest"));
+            return 1;
+        }
+
+        System.out.println("Package:  " + pkg.name() + " v" + resolvedVersion
+                + (version != null && !version.equals(resolvedVersion) ? " (requested: " + version + ")" : ""));
         System.out.println("Type:     " + pkg.type());
         System.out.println();
 
@@ -141,6 +149,72 @@ public class InstallCommand implements Callable<Integer> {
         System.out.println("  Restart your AI client to use the new server. 🚀");
 
         return 0;
+    }
+
+    // ---- Version range resolution ----
+
+    static String resolveVersion(McpmPackage pkg, String versionSpec) {
+        if (versionSpec == null || versionSpec.isBlank()) {
+            return pkg.latestVersion();
+        }
+
+        var versions = new java.util.ArrayList<>(pkg.versions().keySet());
+        java.util.Collections.sort(versions, java.util.Comparator.reverseOrder());
+
+        if (versionSpec.startsWith(">=")) {
+            String min = versionSpec.substring(2);
+            for (String v : versions) {
+                if (compareVersions(v, min) >= 0) return v;
+            }
+            return null;
+        }
+
+        if (versionSpec.startsWith("^")) {
+            // ^1.2.3 → >=1.2.3, <2.0.0
+            String base = versionSpec.substring(1);
+            String[] parts = base.split("\\.");
+            if (parts.length > 0) {
+                String major = parts[0];
+                String upper = (Integer.parseInt(major) + 1) + ".0.0";
+                for (String v : versions) {
+                    if (compareVersions(v, base) >= 0 && compareVersions(v, upper) < 0) return v;
+                }
+            }
+            return null;
+        }
+
+        if (versionSpec.startsWith("~")) {
+            // ~1.2.3 → >=1.2.3, <1.3.0
+            String base = versionSpec.substring(1);
+            String[] parts = base.split("\\.");
+            String upper = parts[0] + "." + (parts.length > 1 ? Integer.parseInt(parts[1]) + 1 : 1) + ".0";
+            for (String v : versions) {
+                if (compareVersions(v, base) >= 0 && compareVersions(v, upper) < 0) return v;
+            }
+            return null;
+        }
+
+        // Exact version match
+        if (pkg.versions().containsKey(versionSpec)) {
+            return versionSpec;
+        }
+
+        return null;
+    }
+
+    static int compareVersions(String a, String b) {
+        String[] pa = a.split("[.-]");
+        String[] pb = b.split("[.-]");
+        for (int i = 0; i < Math.max(pa.length, pb.length); i++) {
+            int va = i < pa.length ? tryParseInt(pa[i]) : 0;
+            int vb = i < pb.length ? tryParseInt(pb[i]) : 0;
+            if (va != vb) return va - vb;
+        }
+        return 0;
+    }
+
+    private static int tryParseInt(String s) {
+        try { return Integer.parseInt(s); } catch (NumberFormatException e) { return 0; }
     }
 
     // ---- Interactive mode ----
