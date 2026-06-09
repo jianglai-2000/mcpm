@@ -33,25 +33,43 @@ mcpm install mcp-server-postgres
 
 ## Features
 
-- **6 package types**: `npx` · `pip` · `uvx` · `jar` · `binary` · `docker`
+- **10 package types**: `npx` · `pip` · `uvx` · `jar` · `binary` · `docker` · `go` · `deno` · `bun` · `cargo`
 - **Auto-detect**: finds `mcp.json`, `claude_desktop_config.json`, Cursor configs
 - **Safe writes**: timestamped backups before every modification
 - **Version tracking**: knows what's installed, powers `mcpm update`
-- **Extensible by design**: SPI-based plugin architecture
-- **Zero-runtime-dependency SPI**: the extension API has no dependencies
+- **Service discovery**: scan local processes, ports, and configs for MCP servers
+- **Multi-environment**: dev/staging/production isolated configs with `mcpm env`
+- **Health monitoring**: `mcpm health --watch` continuous uptime checks
+- **Offline cache**: cached registry + packages work without network
+- **Shell completion**: bash/zsh/fish with one-command `mcpm completion --install`
+- **Security audit**: `mcpm audit` detects outdated packages and plaintext secrets
+- **Extensible by design**: SPI-based plugin architecture, zero-dependency API
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `search <q>` | Search the package registry |
-| `info <pkg>` | Show package details |
-| `install <pkg>` | Install + write to config |
-| `uninstall <pkg>` | Remove from config + clean up |
+| `info/view/show <pkg>` | Show package details with version list |
+| `install [pkg]` | Install (or interactive mode with no args) |
+| `uninstall <pkg>` | Remove from config + clean up (`--purge`) |
 | `list` | Show installed servers |
 | `update [pkg]` | Upgrade to latest version |
 | `detect` | Find config files on this machine |
-| `init` | Create a fresh mcp.json |
+| `init` | Create a fresh mcp.json or project template |
+| `publish` | Publish your package to the registry |
+| `completion` | Generate shell completion scripts |
+| `config` | View/modify global settings |
+| `why <pkg>` | Explain why a package is installed |
+| `audit` | Security audit of installed packages |
+| `docs <pkg>` | Open package homepage in browser |
+| `diff <pkg>` | Compare installed vs latest version |
+| `outdated` | List packages with newer versions available |
+| `backup` | Backup/restore config and state |
+| `env` | Multi-environment management |
+| `link/unlink` | Link local projects for development |
+| `health` | Check if servers are responsive (`--watch`) |
+| `discover` | Find MCP services running on this machine |
 
 ## Project Structure
 
@@ -98,10 +116,10 @@ java -jar mcpm-registry-server/target/mcpm-registry-server-0.1.0-SNAPSHOT.jar
 
 | Metric | Value |
 |--------|-------|
-| Modules | 14 Maven modules |
-| CLI commands | 9 (search, info, install, uninstall, list, update, detect, init, publish) |
-| Package handlers | 6 (npx, pip, uvx, jar, binary, docker) |
-| Tests | 80+ unit tests |
+| Modules | 18 Maven modules |
+| CLI commands | 24 (search, info, install, uninstall, list, update, detect, init, publish, completion, config, why, audit, docs, diff, outdated, backup, env, link, unlink, health, discover, help) |
+| Package handlers | 10 (npx, pip, uvx, jar, binary, docker, go, deno, bun, cargo) |
+| Tests | 140+ unit tests |
 | CI | 3 OS × 2 JDK (17, 21) |
 | Dependencies | Runtime: Picocli, Jackson, SLF4J. SPI: zero. |
 

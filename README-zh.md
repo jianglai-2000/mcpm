@@ -34,26 +34,29 @@ mcpm install mcp-server-postgres
 
 ## 功能特性
 
-- **6 种包类型**: `npx` · `pip` · `uvx` · `jar` · `binary` · `docker`
+- **10 种包类型**: `npx` · `pip` · `uvx` · `jar` · `binary` · `docker` · `go` · `deno` · `bun` · `cargo`
 - **自动检测**: 自动查找 `mcp.json`、`claude_desktop_config.json`、Cursor 配置
 - **安全写入**: 每次修改前自动创建时间戳备份
 - **版本追踪**: 记录已安装版本，支持 `mcpm update` 升级
-- **可扩展**: SPI 插件架构，加新类型只需写一个 Java 文件
+- **服务发现**: 扫描本机进程、端口和配置，发现运行中的 MCP 服务
+- **多环境管理**: dev/staging/production 隔离配置
+- **健康监控**: `mcpm health --watch` 持续检查服务状态
 - **离线缓存**: 已缓存的包和注册表离线也可用
 - **多架构**: 自动选择 linux-amd64 / darwin-arm64 / win-x64
+- **安全审计**: `mcpm audit` 检测过期包和明文密钥
 
 ## 命令列表
 
 | 命令 | 描述 |
 |------|------|
 | `search <q>` | 搜索注册表中的包 |
-| `info <pkg>` | 查看包详情 |
-| `install <pkg>` | 安装并写入配置（无参数进入交互模式） |
-| `uninstall <pkg>` | 从配置中移除并清理 |
+| `info/view/show <pkg>` | 查看包详情（版本列表、下载链接） |
+| `install [pkg]` | 安装并写入配置（无参数进入交互模式） |
+| `uninstall <pkg>` | 从配置中移除并清理（`--purge` 清除缓存） |
 | `list` | 列出已安装的服务器 |
 | `update [pkg]` | 升级到最新版本 |
 | `detect` | 扫描本机的 MCP 配置文件 |
-| `init` | 创建一个全新的 mcp.json |
+| `init` | 创建 mcp.json 或生成 MCP 服务端脚手架 |
 | `publish` | 发布你的包到注册表 |
 | `completion` | 生成 shell 补全脚本 |
 | `config` | 查看和修改全局设置 |
@@ -61,7 +64,12 @@ mcpm install mcp-server-postgres
 | `audit` | 安全审计：检测过期包和配置问题 |
 | `docs <pkg>` | 在浏览器中打开包的主页 |
 | `diff <pkg>` | 比较已安装版本和最新版本 |
+| `outdated` | 列出所有可升级的包 |
 | `backup` | 备份和恢复配置与状态 |
+| `env` | 多环境管理 |
+| `link/unlink` | 本地开发链接测试 |
+| `health` | 服务健康检查（`--watch` 持续监控） |
+| `discover` | 发现本机运行中的 MCP 服务 |
 
 ## 10 种包处理器
 
@@ -138,7 +146,7 @@ java -jar mcpm-cli/target/mcpm-cli-*.jar
 | 指标 | 数据 |
 |------|------|
 | 模块数 | 18 个 Maven 模块 |
-| CLI 命令 | 17 个 |
+| CLI 命令 | 24 个 |
 | 包处理器 | 10 种 |
 | 测试用例 | 140+ 单元测试 |
 | CI | 3 个系统 × 2 个 JDK 版本 |
