@@ -22,7 +22,7 @@
         <!-- dependency versions (single source of truth) -->
         <picocli.version>4.7.6</picocli.version>
         <jackson.version>2.18.2</jackson.version>
-        <junit.version>5.11.4</junit.version>
+        <junit.version>6.1.0</junit.version>
         <assertj.version>3.27.3</assertj.version>
         <mockito.version>5.15.2</mockito.version>
         <slf4j.version>2.0.16</slf4j.version>
