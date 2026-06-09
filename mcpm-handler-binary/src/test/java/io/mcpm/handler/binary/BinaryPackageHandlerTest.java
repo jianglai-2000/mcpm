@@ -31,7 +31,7 @@ class BinaryPackageHandlerTest {
         var result = handler.install(req);
 
         assertThat(result.success()).isFalse();
-        assertThat(result.message()).contains("downloadUrl");
+        assertThat(result.message()).contains("No download URL");
     }
 
     @Test

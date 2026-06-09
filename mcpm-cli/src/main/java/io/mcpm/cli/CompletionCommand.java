@@ -27,6 +27,9 @@ public class CompletionCommand implements Callable<Integer> {
     @CommandLine.Parameters(paramLabel = "SHELL", description = "Shell type: bash, zsh, or fish")
     String shell;
 
+    @CommandLine.Option(names = {"-i", "--install"}, description = "Install completion script to default location")
+    boolean install;
+
     @Spec
     CommandSpec spec;
 
@@ -42,6 +45,11 @@ public class CompletionCommand implements Callable<Integer> {
                 yield "";
             }
         };
+
+        // Auto-install if requested
+        if (install) {
+            return installCompletion(script, shell);
+        }
 
         PrintWriter out = spec.commandLine().getOut();
         out.print(script);
@@ -135,6 +143,44 @@ _mcpm() {
 
 _mcpm "$@"
 """;
+    }
+
+    private int installCompletion(String script, String shellType) {
+        try {
+            java.nio.file.Path target = switch (shellType) {
+                case "bash" -> {
+                    // ~/.bash_completion.d/mcpm or append to ~/.bashrc
+                    java.nio.file.Path dir = java.nio.file.Path.of(
+                            System.getProperty("user.home"), ".bash_completion.d");
+                    java.nio.file.Files.createDirectories(dir);
+                    yield dir.resolve("mcpm");
+                }
+                case "zsh" -> {
+                    java.nio.file.Path dir = java.nio.file.Path.of(
+                            System.getProperty("user.home"), ".zsh/completions");
+                    java.nio.file.Files.createDirectories(dir);
+                    yield dir.resolve("_mcpm");
+                }
+                case "fish" -> {
+                    java.nio.file.Path dir = java.nio.file.Path.of(
+                            System.getProperty("user.home"),
+                            ".config", "fish", "completions");
+                    java.nio.file.Files.createDirectories(dir);
+                    yield dir.resolve("mcpm.fish");
+                }
+                default -> throw new IllegalStateException("Unexpected: " + shellType);
+            };
+
+            java.nio.file.Files.writeString(target, script);
+            System.out.println("✓ Installed " + shellType + " completion to: " + target);
+            System.out.println("  Restart your shell or source it:");
+            System.out.println("    source " + target);
+            return 0;
+
+        } catch (java.io.IOException e) {
+            System.err.println("✘ Failed to install: " + e.getMessage());
+            return 1;
+        }
     }
 
     private String generateFish() {

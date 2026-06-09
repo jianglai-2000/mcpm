@@ -24,7 +24,7 @@ import static io.mcpm.core.config.ConfigHelper.describeEntry;
 )
 public class InstallCommand implements Callable<Integer> {
 
-    @CommandLine.Parameters(paramLabel = "PACKAGE", description = "Package name to install (e.g. @anthropic/server-filesystem)")
+    @CommandLine.Parameters(paramLabel = "PACKAGE", description = "Package name to install (e.g. @anthropic/server-filesystem). Omit for interactive mode.", arity = "0..1")
     String packageName;
 
     @CommandLine.Option(names = {"-v", "--version"}, description = "Specific version to install (default: latest)")
@@ -44,8 +44,14 @@ public class InstallCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        // ---- Step 1: Resolve package from registry ----
         RegistryAggregator registry = new RegistryAggregator();
+
+        // ---- Interactive mode: no package name ----
+        if (packageName == null) {
+            return interactiveInstall(registry);
+        }
+
+        // ---- Step 1: Resolve package from registry ----
         Optional<McpmPackage> pkgOpt = registry.getPackage(packageName);
 
         if (pkgOpt.isEmpty()) {
@@ -78,21 +84,21 @@ public class InstallCommand implements Callable<Integer> {
             System.out.println("  → Overwriting (--yes)");
         }
 
-        // ---- Step 4: Install via handler ----
+        // ---- Step 4: Install via handler (with spinner) ----
         System.out.println();
-        System.out.print("Installing... ");
-        System.out.flush();
+        var spinner = new io.mcpm.core.util.Spinner("Installing " + pkg.name());
+        spinner.start();
 
         InstallOrchestrator orchestrator = new InstallOrchestrator();
         PackageHandler.InstallResult result = orchestrator.install(pkg, version, env);
 
         if (!result.success()) {
-            System.err.println();
-            System.err.println("✘ Installation failed: " + result.message());
+            spinner.fail();
+            System.err.println("  ✘ " + result.message());
             return 1;
         }
 
-        System.out.println("✓");
+        spinner.success();
 
         // ---- Step 5: Record in state ----
         String installedVer = version != null ? version : pkg.latestVersion();
@@ -135,5 +141,62 @@ public class InstallCommand implements Callable<Integer> {
         System.out.println("  Restart your AI client to use the new server. 🚀");
 
         return 0;
+    }
+
+    // ---- Interactive mode ----
+
+    private Integer interactiveInstall(RegistryAggregator registry) throws Exception {
+        System.out.println("Interactive install — search for packages:");
+        System.out.println("(Type your search query and press Enter, or Ctrl+C to exit)");
+        System.out.println();
+
+        java.io.BufferedReader reader = new java.io.BufferedReader(
+                new java.io.InputStreamReader(System.in));
+
+        while (true) {
+            System.out.print("Search: ");
+            System.out.flush();
+            String query = reader.readLine();
+            if (query == null || query.isBlank()) continue;
+
+            var results = registry.search(query);
+            if (results.isEmpty()) {
+                System.out.println("  No packages found for: " + query);
+                System.out.println();
+                continue;
+            }
+
+            System.out.println();
+            for (int i = 0; i < results.size(); i++) {
+                var p = results.get(i);
+                System.out.printf("  %2d. %-30s %-8s %s%n",
+                        i + 1, p.name(), p.type(),
+                        p.description() != null ? p.description() : "");
+            }
+            System.out.println();
+            System.out.print("Select package (1-%d) or 'q' to quit: ".formatted(results.size()));
+            System.out.flush();
+
+            String line = reader.readLine();
+            if (line == null || line.trim().equalsIgnoreCase("q")) {
+                System.out.println("Aborted.");
+                return 0;
+            }
+
+            try {
+                int idx = Integer.parseInt(line.trim()) - 1;
+                if (idx >= 0 && idx < results.size()) {
+                    packageName = results.get(idx).name();
+                    // Fall through to the normal install flow
+                    break;
+                }
+            } catch (NumberFormatException ignored) {}
+
+            System.out.println("Invalid selection. Try again.");
+            System.out.println();
+        }
+
+        // Re-run with the selected package name
+        return call();
     }
 }
