@@ -148,6 +148,7 @@ public class StateManager {
         if (!dirty) return;
         try {
             Files.createDirectories(stateFile.getParent());
+            securePermissions(stateFile.getParent());
 
             ObjectNode root = MAPPER.createObjectNode();
             root.put("version", STATE_VERSION);
@@ -176,6 +177,20 @@ public class StateManager {
 
     private static String safeText(JsonNode node, String field, String fallback) {
         return node.has(field) ? node.get(field).asText(fallback) : fallback;
+    }
+
+    /** Restrict directory permissions to owner-only on Unix systems. */
+    private static void securePermissions(Path dir) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) return;
+        try {
+            var perms = java.util.EnumSet.of(
+                    java.nio.file.attribute.PosixFilePermission.OWNER_READ,
+                    java.nio.file.attribute.PosixFilePermission.OWNER_WRITE,
+                    java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE,
+                    java.nio.file.attribute.PosixFilePermission.GROUP_READ);
+            java.nio.file.Files.setPosixFilePermissions(dir, perms);
+        } catch (Exception ignored) {}
     }
 
     // ---- Data class ----

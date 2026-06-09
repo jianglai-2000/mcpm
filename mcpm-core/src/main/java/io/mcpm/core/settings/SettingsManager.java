@@ -112,6 +112,7 @@ public class SettingsManager {
     private synchronized void save() {
         try {
             Files.createDirectories(settingsFile.getParent());
+            securePermissions(settingsFile.getParent());
             ObjectNode root = MAPPER.createObjectNode();
             root.put("version", SETTINGS_VERSION);
             ObjectNode settingsNode = root.putObject("settings");
@@ -137,5 +138,19 @@ public class SettingsManager {
             dirty = true;
         }
         if (dirty) save();
+    }
+
+    /** Restrict directory permissions to owner-only on Unix systems. */
+    private static void securePermissions(java.nio.file.Path dir) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) return;
+        try {
+            var perms = java.util.EnumSet.of(
+                    java.nio.file.attribute.PosixFilePermission.OWNER_READ,
+                    java.nio.file.attribute.PosixFilePermission.OWNER_WRITE,
+                    java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE,
+                    java.nio.file.attribute.PosixFilePermission.GROUP_READ);
+            java.nio.file.Files.setPosixFilePermissions(dir, perms);
+        } catch (Exception ignored) {}
     }
 }
