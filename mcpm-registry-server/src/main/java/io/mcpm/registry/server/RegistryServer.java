@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  * Stores packages in a {@code registry.json} file on disk.
  * Supports package submission (POST) and search/retrieval (GET).
  *
- * <h3>API</h3>
+ * <h2>API</h2>
  * <ul>
  *   <li>{@code GET  /api/v1/packages} — list all packages</li>
  *   <li>{@code GET  /api/v1/search?q=...} — search packages</li>
@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
  *   <li>{@code POST /api/v1/packages} — submit a new package</li>
  * </ul>
  *
- * <h3>Usage</h3>
+ * <h2>Usage</h2>
  * <pre>
  * java io.mcpm.registry.server.RegistryServer
  *   --port 8080
