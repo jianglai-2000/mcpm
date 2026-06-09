@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "info",
-        description = "Show detailed information about a package.",
+        description = "@|cyan Show|@ detailed information about a package.",
         mixinStandardHelpOptions = true
 )
 public class InfoCommand implements Callable<Integer> {

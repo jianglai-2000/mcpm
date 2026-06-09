@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "publish",
-        description = "Publish your MCP server to the mcpm registry.",
+        description = "@|magenta Publish|@ your MCP server to the mcpm registry.",
         mixinStandardHelpOptions = true
 )
 public class PublishCommand implements Callable<Integer> {

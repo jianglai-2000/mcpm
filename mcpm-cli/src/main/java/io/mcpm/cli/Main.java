@@ -14,13 +14,15 @@ import picocli.CommandLine;
                 UpdateCommand.class,
                 InitCommand.class,
                 PublishCommand.class,
+                CompletionCommand.class,
+                ConfigCommand.class,
                 CommandLine.HelpCommand.class
         },
         description = "MCP Package Manager — discover, install, and manage MCP servers.",
         mixinStandardHelpOptions = true,
         version = "@|bold mcpm 0.1.0|@",
         usageHelpAutoWidth = true,
-        footer = "\nReport issues at https://github.com/mcpm/mcpm/issues"
+        footer = "@|cyan Report issues at https://github.com/mcpm/mcpm/issues|@"
 )
 public class Main implements Runnable {
 

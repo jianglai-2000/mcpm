@@ -21,7 +21,7 @@ import static io.mcpm.core.config.ConfigHelper.describeEntry;
 
 @CommandLine.Command(
         name = "update",
-        description = "Update installed MCP servers to the latest version.",
+        description = "@|yellow Update|@ installed MCP servers to the latest version.",
         mixinStandardHelpOptions = true
 )
 public class UpdateCommand implements Callable<Integer> {

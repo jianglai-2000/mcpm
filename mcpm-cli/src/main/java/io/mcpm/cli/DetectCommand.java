@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "detect",
-        description = "Detect MCP configuration files on this machine.",
+        description = "@|cyan Detect|@ MCP configuration files on this machine.",
         mixinStandardHelpOptions = true
 )
 public class DetectCommand implements Callable<Integer> {

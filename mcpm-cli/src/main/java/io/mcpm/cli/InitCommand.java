@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "init",
-        description = "Create an empty MCP configuration file in the current directory.",
+        description = "@|green Init|@ create an empty MCP configuration file.",
         mixinStandardHelpOptions = true
 )
 public class InitCommand implements Callable<Integer> {

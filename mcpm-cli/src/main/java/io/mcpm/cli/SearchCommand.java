@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "search",
-        description = "Search for MCP server packages in the registry.",
+        description = "@|cyan Search|@ for MCP server packages in the registry.",
         mixinStandardHelpOptions = true
 )
 public class SearchCommand implements Callable<Integer> {

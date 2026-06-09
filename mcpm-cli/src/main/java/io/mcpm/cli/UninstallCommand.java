@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "uninstall",
-        description = "Uninstall an MCP server package and remove it from your config.",
+        description = "@|red Uninstall|@ an MCP server package and remove it from your config.",
         mixinStandardHelpOptions = true
 )
 public class UninstallCommand implements Callable<Integer> {

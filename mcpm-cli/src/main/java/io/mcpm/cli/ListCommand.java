@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "list",
-        description = "List installed MCP servers from the configuration file.",
+        description = "@|cyan List|@ installed MCP servers from the configuration file.",
         mixinStandardHelpOptions = true
 )
 public class ListCommand implements Callable<Integer> {

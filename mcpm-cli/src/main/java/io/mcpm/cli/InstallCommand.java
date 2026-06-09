@@ -19,7 +19,7 @@ import static io.mcpm.core.config.ConfigHelper.describeEntry;
 
 @CommandLine.Command(
         name = "install",
-        description = "Install an MCP server package and add it to your MCP config.",
+        description = "@|green Install|@ an MCP server package and add it to your MCP config.",
         mixinStandardHelpOptions = true
 )
 public class InstallCommand implements Callable<Integer> {
