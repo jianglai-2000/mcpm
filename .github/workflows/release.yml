@@ -26,7 +26,7 @@ jobs:
           cache: maven
 
       - name: Build CLI fat JAR
-        run: ./mvnw package -DskipTests -pl mcpm-cli -am --no-transfer-progress -q
+        run: chmod +x mvnw && ./mvnw package -DskipTests -pl mcpm-cli -am --no-transfer-progress -q
         shell: bash
 
       - name: Build Server fat JAR

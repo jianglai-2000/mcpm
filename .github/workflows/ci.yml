@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Compile
-        run: ./mvnw compile -q --no-transfer-progress
+        run: chmod +x mvnw && ./mvnw compile -q --no-transfer-progress
         shell: bash
 
       - name: Run tests
